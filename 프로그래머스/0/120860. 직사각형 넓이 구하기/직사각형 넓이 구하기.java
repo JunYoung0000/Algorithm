@@ -13,7 +13,7 @@ class Solution {
             if(dots[i][1] > maxY)
                 maxY = dots[i][1];
             else if(dots[i][1] < minY)
-                maxY = dots[i][1];
+                minY = dots[i][1];
         }
         
         return (maxX-minX) * (maxY - minY);
