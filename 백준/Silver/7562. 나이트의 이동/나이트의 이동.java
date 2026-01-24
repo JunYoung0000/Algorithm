@@ -42,16 +42,18 @@ public class Main {
                         int nx = cur[0] + dx[d];
                         int ny = cur[1] + dy[d];
 
-                        if(nx == x2 && ny == y2){
-                            flag = true;
-                            break;
-                        }
-
                         if(nx >= 0 && ny >= 0 && nx < I && ny < I && !visited[nx][ny]){
+                            if(nx == x2 && ny == y2){
+                                flag = true;
+                                break;
+                            }
+
                             q.add(new int[]{nx, ny});
                             visited[nx][ny] = true;
                         }
                     }
+
+                    if(flag) break;
                 }
 
                 count++;
