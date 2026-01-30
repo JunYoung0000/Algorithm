@@ -35,32 +35,28 @@ public class Main {
                     q.add(new int[]{i, j});
                     visited[i][j] = true;
                     count++;
-                }
 
-                while(!q.isEmpty()){
-                    int[] cur = q.poll();
-                    area++;
+                    while(!q.isEmpty()){
+                        int[] cur = q.poll();
+                        area++;
 
-                    for(int d = 0; d < 4; d++){
-                        int nx = cur[1] + dx[d];
-                        int ny = cur[0] + dy[d];
+                        for(int d = 0; d < 4; d++){
+                            int nx = cur[1] + dx[d];
+                            int ny = cur[0] + dy[d];
 
-                        if(nx >= 0 && ny >= 0 && nx < m && ny < n && !visited[ny][nx] && map[ny][nx] == 1){
-                            q.add(new int[]{ny, nx});
-                            visited[ny][nx] = true;
+                            if(nx >= 0 && ny >= 0 && nx < m && ny < n && !visited[ny][nx] && map[ny][nx] == 1){
+                                q.add(new int[]{ny, nx});
+                                visited[ny][nx] = true;
+                            }
                         }
                     }
+
+                    if(maxArea < area) maxArea = area;
                 }
-
-
-                if(maxArea < area) maxArea = area;
             }
         }
 
         System.out.println(count);
         System.out.println(maxArea);
-
-
-
     }
 }
