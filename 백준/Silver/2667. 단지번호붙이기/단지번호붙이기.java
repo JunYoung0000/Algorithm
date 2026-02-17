@@ -2,60 +2,63 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
+    static int N;
+    static int[][] map;
+    static boolean[][] visited;
+    static int count = 0;
+    static ArrayList<Integer> list = new ArrayList<>();
+    static int houseCount;
+
+    static int[] dy = {-1, 1, 0, 0};
+    static int[] dx = {0, 0, -1, 1};
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
 
-        int[][] map = new int[N][N];
-        boolean[][] visited = new boolean[N][N];
+        map = new int[N][N];
+        visited = new boolean[N][N];
 
-        ArrayList<Integer> list = new ArrayList<>();
-
-
-        for(int i = 0; i < N; i++) {
-            String line =  br.readLine();
-            for(int j = 0; j < N; j++) {
+        for (int i = 0; i < N; i++) {
+            String line = br.readLine();
+            for (int j = 0; j < N; j++) {
                 map[i][j] = line.charAt(j) - '0';
             }
         }
-
-        Queue<int[]> q = new LinkedList<>();
-
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
-
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                if(!visited[i][j] && map[i][j] == 1) {
-                    q.add(new int[]{i, j});
-                    visited[i][j] = true;
-                    int count = 1;
-
-                    while(!q.isEmpty()) {
-                        int[] cur = q.poll();
-
-                        for (int d = 0; d < 4; d++) {
-                            int nx = cur[0] + dx[d];
-                            int ny = cur[1] + dy[d];
-
-                            if(nx >= 0 && ny >= 0 && nx < N && ny < N && map[nx][ny] == 1 && !visited[nx][ny]) {
-                                q.add(new int[]{nx, ny});
-                                visited[nx][ny] = true;
-                                count++;
-                            }
-                        }
-                    }
-
-                    list.add(count);
+        
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (!visited[i][j] && map[i][j] == 1) {
+                    houseCount=0;
+                    dfs(i, j);
+                    list.add(houseCount);
+                    count++;
                 }
             }
         }
-        Collections.sort(list);
-        System.out.println(list.size());
 
-        for(int num : list) {
+        System.out.println(count);
+        Collections.sort(list);
+        for(int num : list){
             System.out.println(num);
+        }
+    }
+
+    static void dfs(int i, int j) {
+        visited[i][j] = true;
+        houseCount++;
+
+        for (int d = 0; d < 4; d++) {
+            int x = j + dx[d];
+            int y = i + dy[d];
+
+            if (x >= 0 && y >= 0 && x < N && y < N ) {
+                if(!visited[y][x] && map[y][x] == 1) {
+                    dfs(y, x);
+                }
+            }
         }
     }
 }
