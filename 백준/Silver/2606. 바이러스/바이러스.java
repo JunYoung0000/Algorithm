@@ -34,16 +34,16 @@ public class Main {
         }
 
         dfs(1);
-        System.out.println(count - 1);
+        System.out.println(count);
     }
 
     static void dfs(int node) {
         visited[node] = true;
-        count++;
 
         for(int next : graph[node]){
             if(!visited[next]){
                 dfs(next);
+                count++;
             }
         }
     }
