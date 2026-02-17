@@ -2,45 +2,49 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
+    static int N;
+    static int M;
+    static ArrayList<Integer>[] graph;
+    static boolean[] visited;
+    static int count = 0;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(br.readLine());
-        int M =  Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
 
-        ArrayList<Integer>[] list = new ArrayList[N + 1];
-        boolean[] visited = new boolean[N + 1];
+        graph = new ArrayList[N + 1];
+        visited = new boolean[N + 1];
 
-        for(int i = 1; i <= N; i++){
-            list[i] = new ArrayList<>();
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
         }
 
-        Queue<Integer> q = new LinkedList<>();
+        StringTokenizer st;
 
-        for(int i = 0; i < M; i++){
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-            list[a].add(b);
-            list[b].add(a);
+            graph[x].add(y);
+            graph[y].add(x);
         }
 
-        q.add(1);
-        visited[1] = true;
-        int count = 0;
+        dfs(1);
+        System.out.println(count - 1);
+    }
 
-        while(!q.isEmpty()){
-            int cur = q.poll();
+    static void dfs(int node) {
+        visited[node] = true;
+        count++;
 
-            for(int next : list[cur]){
-                if(!visited[next]){
-                    q.add(next);
-                    visited[next] = true;
-                    count++;
-                }
+        for(int next : graph[node]){
+            if(!visited[next]){
+                dfs(next);
             }
         }
-        System.out.println(count);
     }
 }
