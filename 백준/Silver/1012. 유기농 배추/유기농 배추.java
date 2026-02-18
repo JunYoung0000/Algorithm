@@ -1,67 +1,71 @@
-    import java.io.*;
-    import java.util.*;
+import java.io.*;
+import java.util.*;
 
-    public class Main {
-        public static void main(String[] args) throws IOException {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-            int T = Integer.parseInt(br.readLine());
-            ArrayList<Integer> list = new ArrayList<>();
-            StringBuilder sb = new StringBuilder();
-
-            int[] dx = {-1, 1, 0, 0};
-            int[] dy = {0, 0, -1, 1};
-
-            for(int t = 0; t < T; t++ ) {
-                StringTokenizer st = new StringTokenizer(br.readLine());
-                int M = Integer.parseInt(st.nextToken());
-                int N = Integer.parseInt(st.nextToken());
-                int K = Integer.parseInt(st.nextToken());
+public class Main {
+    static int[][] map;
+    static boolean[][] visited;
+    static int M;
+    static int N;
+    static int T;
+    static int K;
+    static int count = 0;
+    static StringBuilder sb = new StringBuilder();
+    static int[] dy = {-1, 1, 0, 0};
+    static int[] dx = {0, 0, -1, 1};
 
 
-                int[][] map = new int[M][N];
-                boolean[][] visited = new boolean[M][N];
 
-                for(int k = 0; k < K; k++) {
-                    StringTokenizer st2 = new StringTokenizer(br.readLine());
-                    int a = Integer.parseInt(st2.nextToken());
-                    int b = Integer.parseInt(st2.nextToken());
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-                    map[a][b] = 1;
-                }
+        T = Integer.parseInt(br.readLine());
 
-                Queue<int[]> q = new LinkedList<>();
+        for(int t = 0; t < T; t++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
 
-                int count = 0;
+            M = Integer.parseInt(st.nextToken());
+            N = Integer.parseInt(st.nextToken());
+            K = Integer.parseInt(st.nextToken());
 
-                for(int i = 0; i < M; i++) {
-                    for(int j = 0; j < N; j++) {
-                        if(!visited[i][j] && map[i][j] == 1) {
-                            q.add(new int[]{i, j});
-                            visited[i][j] = true;
-                            count++;
+            count = 0;
+            map = new int[N][M];
+            visited = new boolean[N][M];
 
+            for(int k = 0; k < K; k++){
+                st = new StringTokenizer(br.readLine());
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
 
-                            while(!q.isEmpty()) {
-                                int[] cur = q.poll();
+                map[y][x] = 1;
+            }
 
-                                for (int d = 0; d < 4; d++) {
-                                    int nx = cur[0] + dx[d];
-                                    int ny = cur[1] + dy[d];
-
-                                    if(nx >= 0 && ny >= 0 && nx < M && ny < N && map[nx][ny] == 1 && !visited[nx][ny]) {
-                                        q.add(new int[]{nx, ny});
-                                        visited[nx][ny] = true;
-                                    }
-                                }
-                            }
-
-                        }
+            for(int i = 0; i < N; i++){
+                for(int j = 0; j < M; j++){
+                    if(!visited[i][j] && map[i][j] == 1){
+                        visited[i][j] = true;
+                        dfs(i, j);
+                        count++;
                     }
                 }
-                sb.append(count).append("\n");
             }
-            System.out.println(sb);
 
+            sb.append(count).append("\n");
+        }
+
+        System.out.println(sb);
+    }
+
+    static void dfs(int y, int x){
+        for(int d = 0; d < 4; d++){
+            int nx = x + dx[d];
+            int ny = y + dy[d];
+
+            if(nx >= 0 && ny >= 0 && nx < M && ny < N){
+                if(!visited[ny][nx] && map[ny][nx] == 1){
+                    visited[ny][nx] = true;
+                    dfs(ny, nx);
+                }
+            }
         }
     }
+}
