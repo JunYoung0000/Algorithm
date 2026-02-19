@@ -1,64 +1,66 @@
-    import java.io.*;
-    import java.util.*;
+import java.io.*;
+import java.util.*;
 
-    public class Main {
-        public static void main(String[] args) throws IOException {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+public class Main {
 
-            int N = Integer.parseInt(br.readLine());
+    static int N;
+    static int[][] map;
+    static boolean[][] visited;
 
-            int[][] map =  new int[N][N];
+    static int[] dy = {-1, 1, 0, 0};
+    static int[] dx = {0, 0, -1, 1};
 
+    static int maxSafeCount = 0;
+    static int safeCount = 0;
+    static int height;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        N = Integer.parseInt(br.readLine());
+        map = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            for (int j = 0; j < N; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        for (height = 0; height <= 100; height++) {
+            visited = new boolean[N][N];
+            safeCount = 0;
 
             for (int i = 0; i < N; i++) {
-                StringTokenizer st = new StringTokenizer(br.readLine());
-
                 for (int j = 0; j < N; j++) {
-                    map[i][j] = Integer.parseInt(st.nextToken());
-                }
-            }
-
-            int[] dx = {-1, 1, 0, 0};
-            int[] dy = {0, 0, -1, 1};
-
-
-            int max = 0;
-
-            for(int h = 0; h <= 100; h++){
-                int count = 0;
-                boolean[][] visited = new boolean[N][N];
-                
-                Queue<int[]> q = new LinkedList<>();
-
-                for(int i = 0; i < N; i++){
-                    for(int j = 0; j < N; j++){
-                        if(!visited[i][j] && map[i][j] > h){
-                            q.add(new int[] {i, j});
-                            visited[i][j] = true;
-                            count++;
-                        }
-
-
-                        while(!q.isEmpty()){
-                            int[] cur = q.poll();
-
-                            for(int d = 0; d < 4; d++){
-                                int x = cur[0] + dx[d];
-                                int y = cur[1] + dy[d];
-
-
-                                if(x >= 0 && y >= 0 && x < N && y < N && !visited[x][y] && map[x][y] > h){
-                                    q.add(new int[] {x, y});
-                                    visited[x][y] = true;
-                                }
-                            }
-                        }
+                    if (!visited[i][j] && map[i][j] > height) {
+                        dfs(i, j);
+                        safeCount++;
                     }
                 }
-
-                if(count > max) max = count;
             }
 
-            System.out.println(max);
+            if(safeCount > maxSafeCount){
+                maxSafeCount = safeCount;
+            }
+        }
+
+        System.out.println(maxSafeCount);
+    }
+
+    static void dfs(int y, int x) {
+        visited[y][x] = true;
+
+        for (int d = 0; d < 4; d++) {
+            int ny = y + dy[d];
+            int nx = x + dx[d];
+
+            if(ny >= 0 && nx >= 0 && ny < N && nx < N){
+                if(!visited[ny][nx] && map[ny][nx] > height){
+                    dfs(ny, nx);
+                }
+            }
         }
     }
+}
