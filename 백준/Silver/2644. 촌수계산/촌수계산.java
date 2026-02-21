@@ -2,67 +2,54 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    static ArrayList<Integer>[] graph;
+    static boolean[] visited;
+    static int n, m, x, y;
+    static int X, Y;
+    static int result = -1;
+
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(br.readLine());
-        ArrayList<Integer>[] list = new ArrayList[n + 1];
-        boolean[] visited = new boolean[n + 1];
-        for(int i = 1; i <= n; i++) {
-            list[i] = new ArrayList<>();
+        n = Integer.parseInt(br.readLine());
+        graph = new ArrayList[n + 1];
+        visited = new boolean[n + 1];
+
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
         }
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int a = Integer.parseInt(st.nextToken());
-        int b = Integer.parseInt(st.nextToken());
+        X = Integer.parseInt(st.nextToken());
+        Y = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(br.readLine());
 
-        int m = Integer.parseInt(br.readLine());
-
-        for(int i = 1; i <= m; i++) {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
+            x = Integer.parseInt(st.nextToken());
+            y = Integer.parseInt(st.nextToken());
 
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-
-            list[x].add(y);
-            list[y].add(x);
+            graph[x].add(y);
+            graph[y].add(x);
         }
 
-        Queue<Integer> q = new LinkedList<>();
+        dfs(X, 0);
 
-        int count = 0;
-        boolean flag = false;
+        System.out.println(result);
+    }
 
-        q.add(a);
-        visited[a] = true;
+    static void dfs(int X, int depth) {
+        visited[X] = true;
 
-        while(!q.isEmpty()) {
-            int size = q.size();
+        if (X == Y) {
+            result = depth;
+            return;
+        }
 
-            for(int j = 0; j < size; j++){
-                int cur = q.poll();
-
-                for(int i : list[cur]) {
-                    if(!visited[i] && i != b) {
-                        q.add(i);
-                        visited[i] = true;
-                    }
-
-                    if(i == b){
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if(flag) break;
+        for (int num : graph[X]) {
+            if (!visited[num]) {
+                dfs(num, depth + 1);
             }
-
-            count++;
-
-            if(flag) break;
         }
-
-        if(flag) System.out.println(count);
-        else System.out.println(-1);
     }
 }
