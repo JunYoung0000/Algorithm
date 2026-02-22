@@ -2,71 +2,67 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, M;
-    static ArrayList<Integer>[] list;
-    static int[] hackCount;
-    static int[] visited;
-    static int visitToken = 0; // 방문 체크용 토큰
+    static ArrayList<Integer>[] graph;
+    static boolean[] visited;
+    static int maxHackedComputerCount = 0, hackedComputerCount;
+
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
-        // 빠른 입력을 위한 BufferedReader
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        graph = new ArrayList[n + 1];
 
-        list = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
-            list[i] = new ArrayList<>();
+
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < M; i++) {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
             int A = Integer.parseInt(st.nextToken());
             int B = Integer.parseInt(st.nextToken());
-            // B를 해킹하면 A도 해킹되므로, B -> A 방향으로 저장
-            list[B].add(A);
+
+            graph[B].add(A);
         }
 
-        hackCount = new int[N + 1];
-        visited = new int[N + 1];
-        int maxComputer = 0;
+        List<Integer> list = new ArrayList<>();
 
-        for (int i = 1; i <= N; i++) {
-            visitToken++; // 매 반복마다 새로운 토큰 사용 (초기화 대신)
-            hackCount[i] = bfs(i);
-            if (hackCount[i] > maxComputer) {
-                maxComputer = hackCount[i];
+        for (int i = 1; i <= n; i++) {
+            visited = new boolean[n + 1];
+            hackedComputerCount = 0;
+            dfs(i);
+
+            if (hackedComputerCount > maxHackedComputerCount) {
+                maxHackedComputerCount = hackedComputerCount;
+                list.clear();
+                list.add(i);
+            } else if (hackedComputerCount == maxHackedComputerCount) {
+                list.add(i);
             }
         }
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= N; i++) {
-            if (hackCount[i] == maxComputer) {
-                sb.append(i).append(" ");
-            }
+        Collections.sort(list);
+
+        for(int num: list){
+            sb.append(num).append(" ");
         }
-        System.out.println(sb.toString());
+
+        System.out.println(sb);
     }
 
-    static int bfs(int start) {
-        Queue<Integer> q = new ArrayDeque<>(); // LinkedList보다 ArrayDeque가 빠름
-        q.add(start);
-        visited[start] = visitToken;
-        int count = 0;
+    static void dfs(int num) {
+        visited[num] = true;
+        hackedComputerCount++;
 
-        while (!q.isEmpty()) {
-            int cur = q.poll();
-            count++;
-
-            for (int next : list[cur]) {
-                if (visited[next] != visitToken) {
-                    visited[next] = visitToken;
-                    q.add(next);
-                }
+        for(int next: graph[num]){
+            if(!visited[next]){
+                dfs(next);
             }
         }
-        return count;
     }
 }
