@@ -7,19 +7,22 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
         int count = 0;
+        HashSet<Character> set;
+        boolean flag;
+        String input;
 
-        for(int i = 0; i < N; i++) {
-            String input =  br.readLine();
+        for (int i = 0; i < N; i++) {
+            input = br.readLine();
             char prevCh = input.charAt(0);
-            HashSet<Character> set = new HashSet<>();
+            set = new HashSet<>();
             set.add(prevCh);
-            boolean flag = true;
+            flag = true;
 
-            for(int j = 1; j < input.length(); j++){
+            for (int j = 1; j < input.length(); j++) {
                 char ch = input.charAt(j);
 
-                if(prevCh != ch){
-                    if(set.contains(ch)){
+                if (prevCh != ch) {
+                    if (set.contains(ch)) {
                         flag = false;
                         break;
                     } else {
@@ -28,7 +31,7 @@ public class Main {
                     }
                 }
             }
-            if(flag) count++;
+            if (flag) count++;
         }
 
         System.out.println(count);
