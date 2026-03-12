@@ -2,32 +2,32 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static boolean[] visited = new boolean[10001];
 
-    public static void main(String[] args) {
-        for (int i = 1; i < visited.length; i++) {
-            int dn = Kaprekar(i);
-            if (dn < visited.length) {
-                visited[dn] = true;
+    public static void main(String[] args) throws IOException {
+        boolean[] arr = new boolean[10001];
+
+        for (int i = 1; i <= 10000; i++) {
+            int sum = i;
+            int temp = i;
+
+            while (temp > 0) {
+                sum += temp % 10;
+                temp /= 10;
+            }
+
+            if (sum <= 10000) {
+                arr[sum] = true;
             }
         }
 
-        for(int i = 1; i < visited.length; i++){
-            if(!visited[i]){
-                System.out.println(i);
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 1; i <= 10000; i++) {
+            if (!arr[i]) {
+                sb.append(i).append("\n");
             }
         }
 
-    }
-
-    static int Kaprekar(int x) {
-        int input = x;
-
-        while(input > 0){
-            x += input % 10;
-            input /= 10;
-        }
-
-        return x;
+        System.out.println(sb);
     }
 }
