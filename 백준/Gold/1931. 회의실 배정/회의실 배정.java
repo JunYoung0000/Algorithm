@@ -2,31 +2,33 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        int[][] meetings = new int[N][2];
+        int[][] arr = new int[N][2];
 
+        StringTokenizer st;
         for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            meetings[i][0] = Integer.parseInt(st.nextToken()); // start
-            meetings[i][1] = Integer.parseInt(st.nextToken()); // end
+            st = new StringTokenizer(br.readLine());
+
+            arr[i][0] = Integer.parseInt(st.nextToken());
+            arr[i][1] = Integer.parseInt(st.nextToken());
         }
 
-        // 끝나는 시간 기준 정렬
-        Arrays.sort(meetings, (a, b) -> {
+        Arrays.sort(arr, (a, b) -> {
             if (a[1] == b[1]) return a[0] - b[0];
             return a[1] - b[1];
         });
 
         int count = 0;
-        int endTime = 0;
+        int lastEnd = 0;
 
-        for (int i = 0; i < N; i++) {
-            if (meetings[i][0] >= endTime) {
-                endTime = meetings[i][1];
+        for(int i = 0; i < N; i++) {
+            if(arr[i][0]  >= lastEnd){
                 count++;
+                lastEnd = arr[i][1];
             }
         }
 
