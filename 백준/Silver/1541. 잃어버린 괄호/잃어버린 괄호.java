@@ -1,31 +1,26 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
 
-        String[] parts = input.split("-");
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] arr = br.readLine().split("-");
 
-        int result = 0;
+        int answer = 0;
 
-        result += sum(parts[0]);
+        for(int i = 0; i < arr.length; i++){
+            String[] str = arr[i].split("\\+");
+            int num = 0;
 
-        for (int i = 1; i < parts.length; i++) {
-            result -= sum(parts[i]);
+            for(int j = 0; j < str.length; j++){
+                num += Integer.parseInt(str[j]);
+            }
+
+            if(i != 0) answer -= num;
+            else answer += num;
         }
 
-        System.out.println(result);
-    }
-
-    static int sum(String str) {
-        String[] nums = str.split("\\+");
-        int total = 0;
-
-        for (String num : nums) {
-            total += Integer.parseInt(num);
-        }
-
-        return total;
+        System.out.println(answer);
     }
 }
