@@ -8,6 +8,7 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static class Node implements Comparable<Node> {
         int to, cost;
 
@@ -16,6 +17,7 @@ public class Main {
             this.cost = cost;
         }
 
+        @Override
         public int compareTo(Node o) {
             return this.cost - o.cost;
         }
@@ -37,7 +39,7 @@ public class Main {
         graph = new ArrayList[V + 1];
         dist = new int[V + 1];
 
-        for (int i = 1; i <= V; i++) {
+        for (int i = 1; i <= V; i++){
             graph[i] = new ArrayList<>();
             dist[i] = INF;
         }
@@ -54,12 +56,13 @@ public class Main {
         dijkstra(K);
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= V; i++) {
-            if (dist[i] == INF) sb.append("INF\n");
+        for(int i = 1; i <= V; i++){
+            if(dist[i] == INF) sb.append("INF\n");
             else sb.append(dist[i]).append("\n");
         }
 
-        System.out.print(sb);
+        System.out.println(sb);
+
     }
 
     static void dijkstra(int start){
@@ -70,9 +73,9 @@ public class Main {
         while(!pq.isEmpty()){
             Node cur = pq.poll();
 
-            if (dist[cur.to] < cur.cost) continue;
+            if(dist[cur.to] < cur.cost) continue;
 
-            for (Node next : graph[cur.to]) {
+            for(Node next : graph[cur.to]){
                 int newCost = cur.cost + next.cost;
 
                 if(dist[next.to] > newCost){
@@ -81,6 +84,5 @@ public class Main {
                 }
             }
         }
-
     }
 }
