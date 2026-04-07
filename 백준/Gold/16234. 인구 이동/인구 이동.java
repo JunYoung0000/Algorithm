@@ -1,21 +1,24 @@
+import org.w3c.dom.Node;
+
 import java.io.*;
 import java.util.*;
 
 public class Main {
-
-    static int N, L, R;
     static int[][] map;
-    static boolean[][] visited;
-    static int[] dx = {1, -1, 0, 0};
-    static int[] dy = {0, 0, 1, -1};
 
     static class Node {
         int x, y;
+
         Node(int x, int y) {
             this.x = x;
             this.y = y;
         }
     }
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+
+    static int N, L, R;
+    static boolean[][] visited;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,6 +32,7 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
+
             for (int j = 0; j < N; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
@@ -36,29 +40,29 @@ public class Main {
 
         int day = 0;
 
-        while (true) {
+        while(true){
             visited = new boolean[N][N];
             boolean moved = false;
 
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
-
-                    if (!visited[i][j]) {
-                        if (bfs(i, j)) {
+                    if(!visited[i][j]){
+                        if(bfs(i, j)){
                             moved = true;
                         }
                     }
+
                 }
             }
 
-            if (!moved) break;
+            if(!moved) break;
             day++;
         }
 
         System.out.println(day);
     }
 
-    static boolean bfs(int x, int y) {
+    static boolean bfs(int x, int y){
         Queue<Node> q = new LinkedList<>();
         List<Node> union = new ArrayList<>();
 
@@ -68,10 +72,10 @@ public class Main {
 
         int sum = map[x][y];
 
-        while (!q.isEmpty()) {
+        while(!q.isEmpty()){
             Node cur = q.poll();
 
-            for (int d = 0; d < 4; d++) {
+            for (int d = 0; d < 4; d++){
                 int nx = cur.x + dx[d];
                 int ny = cur.y + dy[d];
 
@@ -86,6 +90,7 @@ public class Main {
                     union.add(new Node(nx, ny));
                     sum += map[nx][ny];
                 }
+
             }
         }
 
@@ -93,7 +98,7 @@ public class Main {
 
         int avg = sum / union.size();
 
-        for (Node n : union) {
+        for (Node n : union){
             map[n.x][n.y] = avg;
         }
 
