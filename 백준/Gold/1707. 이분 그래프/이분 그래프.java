@@ -13,17 +13,18 @@ public class Main {
 
         while (K-- > 0) {
             StringTokenizer st = new StringTokenizer(br.readLine());
+
             int V = Integer.parseInt(st.nextToken());
             int E = Integer.parseInt(st.nextToken());
 
             graph = new ArrayList[V + 1];
             color = new int[V + 1];
 
-            for (int i = 1; i <= V; i++) {
+            for (int i = 1; i <= V; i++){
                 graph[i] = new ArrayList<>();
             }
 
-            for (int i = 0; i < E; i++) {
+            for (int i = 0; i < E; i++){
                 st = new StringTokenizer(br.readLine());
                 int u = Integer.parseInt(st.nextToken());
                 int v = Integer.parseInt(st.nextToken());
@@ -34,9 +35,9 @@ public class Main {
 
             boolean isBipartite = true;
 
-            for (int i = 1; i <= V; i++) {
-                if (color[i] == 0) {
-                    if (!bfs(i)) {
+            for (int i = 1; i <= V; i++){
+                if (color[i] == 0){
+                    if (!bfs(i)){
                         isBipartite = false;
                         break;
                     }
@@ -46,27 +47,29 @@ public class Main {
             sb.append(isBipartite ? "YES\n" : "NO\n");
         }
 
-        System.out.print(sb);
+        System.out.println(sb);
     }
 
-    static boolean bfs(int start) {
+    static boolean bfs(int start){
         Queue<Integer> q = new LinkedList<>();
         q.offer(start);
         color[start] = 1;
 
-        while (!q.isEmpty()) {
+        while(!q.isEmpty()){
             int cur = q.poll();
 
-            for (int next : graph[cur]) {
-                if (color[next] == 0) {
+            for (int next : graph[cur]){
+                if(color[next] == 0){
                     color[next] = -color[cur];
                     q.offer(next);
-                } else if (color[next] == color[cur]) {
+                } else if(color[next] == color[cur]){
                     return false;
                 }
             }
+
         }
 
         return true;
+
     }
 }
